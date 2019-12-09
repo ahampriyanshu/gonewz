@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+  body {
+     background: linear-gradient(to bottom,lightgreen,cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  h1:hover { cursor: pointer; 
+
+  }
+  #score2 {
+
+  }
+
+  </style>
+</head>
+<body>
+  
+<canvas width="750" height="585" id="game" style="position: absolute; left: 21%;top:6%;"></canvas>
+<canvas width="150" height="170" id="score2" style="position: absolute; left: 84%;top:12%;"></canvas>
+<canvas width="150" height="170" id="score1" style="position: absolute; left: 4%;top:12%;"></canvas>
+
+<script
+type="text/javascript">
+var canvas = document.getElementById('game');
+var context = canvas.getContext('2d');
+var s2a = document.getElementById('score2');
+var s2b = s2a.getContext('2d');
+var s1a = document.getElementById('score1');
+var s1b = s1a.getContext('2d');
+const grid = 15;
+const paddleHeight = grid*5;
+const maxPaddleY = canvas.height - grid - paddleHeight;
+var paddleSpeed = 13;
+var ballSpeed = 5;
+var scoreleft  = 0;
+var scoreright = 0;
+
+const leftPaddle = {
+  x: grid * 2,
+  y: canvas.height / 2 - paddleHeight / 2,
+  width: grid,
+  height: paddleHeight,
+  dy: 0
+};
+
+const rightPaddle = {
+  x: canvas.width - grid*3,
+  y: canvas.height / 2 - paddleHeight / 2,
+  width: grid,
+  height: paddleHeight,
+  dy: 0
+};
+
+const ball = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  width: grid,
+  height: grid,
+  resetting: false,
+  dx: ballSpeed,
+  dy: -ballSpeed
+};
+
+function collides(obj1, obj2) {
+  return obj1.x < obj2.x + obj2.width &&
+         obj1.x + obj1.width > obj2.x &&
+         obj1.y < obj2.y + obj2.height &&
+         obj1.y + obj1.height > obj2.y;
+}
+
+function loop() {
+  requestAnimationFrame(loop);
+  context.clearRect(0,0,canvas.width,canvas.height);
+  leftPaddle.y += leftPaddle.dy;
+  rightPaddle.y += rightPaddle.dy;
+  if (leftPaddle.y < grid) {
+    leftPaddle.y = grid;
+  }
+  else if (leftPaddle.y > maxPaddleY) {
+    leftPaddle.y = maxPaddleY;
+  }
+  if (rightPaddle.y < grid) {
+    rightPaddle.y = grid;
+  }
+  else if (rightPaddle.y > maxPaddleY) {
+    rightPaddle.y = maxPaddleY;
+  }
+
+  context.fillStyle = "white";
+  context.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+  context.fillRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+  
+  if (ball.y < grid) {
+    ball.y = grid;
+    ball.dy *= -1;
+  }
+
+  else if (ball.y + grid > canvas.height - grid) {
+    ball.y = canvas.height - grid * 2;
+    ball.dy *= -1;
+  }
+  if ( (ball.x < 0 || ball.x > canvas.width) && !ball.resetting) {
+    ball.resetting = true;
+    setTimeout(() => {
+      ball.resetting = false;
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+    }, 400);
+  }
+  
+  if (collides(ball, leftPaddle)) {
+    ball.dx *= -1;
+    ball.x = leftPaddle.x + leftPaddle.width;    
+  }
+  else if (collides(ball, rightPaddle)) {
+    ball.dx *= -1;
+    ball.x = rightPaddle.x - ball.width;    
+  }
+
+  ro = context.createLinearGradient(0,0,750,585);
+  ro.addColorStop(0,"red");
+  ro.addColorStop(0.025,"orange");
+  ro.addColorStop(0.05,"yellow");
+  ro.addColorStop(0.15,"red");
+  ro.addColorStop(0.20,"orange");
+  ro.addColorStop(0.25,"yellow");
+  ro.addColorStop(0.30,"red");
+  ro.addColorStop(0.35,"orange");
+  ro.addColorStop(0.40,"yellow");
+  ro.addColorStop(0.45,"red");
+  ro.addColorStop(0.50,"yellow");
+  ro.addColorStop(0.55,"orange");
+  ro.addColorStop(0.60,"red");
+  ro.addColorStop(0.65,"orange");
+  ro.addColorStop(0.70,"darkred");
+  ro.addColorStop(0.75,"red");
+  ro.addColorStop(0.80,"yellow");
+  ro.addColorStop(0.85,"orange");
+  ro.addColorStop(0.90,"red");
+  ro.addColorStop(0.95,"orange");
+  ro.addColorStop(0.50,"yellow");
+  ro.addColorStop(0.50,"red");
+  ro.addColorStop(0.05,"orange");
+  ro.addColorStop(0.10,"yellow");
+  ro.addColorStop(0.15,"red");
+  ro.addColorStop(0.20,"orange");
+  ro.addColorStop(0.25,"yellow");
+  ro.addColorStop(0.30,"red");
+  ro.addColorStop(0.35,"orange");
+  ro.addColorStop(0.40,"yellow");
+  ro.addColorStop(0.45,"red");
+  ro.addColorStop(0.50,"yellow");
+  ro.addColorStop(0.55,"orange");
+  ro.addColorStop(0.60,"red");
+  ro.addColorStop(0.65,"orange");
+  ro.addColorStop(0.70,"darkred");
+  ro.addColorStop(0.75,"red");
+  ro.addColorStop(0.80,"yellow");
+  ro.addColorStop(0.85,"orange");
+  ro.addColorStop(0.90,"red");
+  ro.addColorStop(0.95,"orange");
+  ro.addColorStop(1,"yellow");
+context.beginPath();
+context.arc(ball.x,ball.y, 10, 0,Math.PI*2);
+context.fillStyle = ro;
+context.fill();
+context.closePath();
+
+  t = context.createLinearGradient(0,0,750,585);
+  t.addColorStop(0,"yellow");
+  t.addColorStop(0.05,"black");
+  t.addColorStop(0.10,"yellow");
+  t.addColorStop(0.15,"black");
+  t.addColorStop(0.20,"yellow");
+  t.addColorStop(0.25,"black");
+  t.addColorStop(0.30,"yellow");
+  t.addColorStop(0.35,"black");
+  t.addColorStop(0.40,"yellow");
+  t.addColorStop(0.45,"black");
+  t.addColorStop(0.50,"yellow");
+  t.addColorStop(0.55,"black");
+  t.addColorStop(0.60,"yellow");
+  t.addColorStop(0.65,"black");
+  t.addColorStop(0.70,"yellow");
+  t.addColorStop(0.75,"black");
+  t.addColorStop(0.80,"yellow");
+  t.addColorStop(0.85,"black");
+  t.addColorStop(0.90,"yellow");
+  t.addColorStop(0.95,"black");
+  t.addColorStop(1,"yellow");
+  context.fillStyle = t;
+  context.fillRect(0, 0, canvas.width, grid);
+  context.fillStyle = t;
+  context.fillRect(0, canvas.height - grid, canvas.width, canvas.height); 
+
+  score_text2 = s2b.createLinearGradient(0,0,150,170);
+  score_text2.addColorStop(0,"magenta");
+  score_text2.addColorStop(1,"yellow");
+  s2b.fillStyle = score_text2;
+  s2b.font = 'normal 120px comic sans MS'
+  s2b.fillText(scoreleft,30,140);
+  
+
+  score_text1 = s1b.createLinearGradient(0,0,150,170);
+  score_text1.addColorStop(0,"magenta");
+  score_text1.addColorStop(1,"yellow");
+  s1b.fillStyle = score_text1;
+  s1b.font = 'normal 120px comic sans MS'
+  s1b.fillText(scoreleft,30,140);
+  
+}
+document.addEventListener('keydown', function(e) {
+  if (e.which === 38) {
+    rightPaddle.dy = -paddleSpeed;
+  }
+  
+  else if (e.which === 40) {
+    rightPaddle.dy = paddleSpeed;
+  }
+  if (e.which === 87) {
+    leftPaddle.dy = -paddleSpeed;
+  }
+  else if (e.which === 83) {
+    leftPaddle.dy = paddleSpeed;
+  }
+});
+document.addEventListener('keyup', function(e) {
+  if (e.which === 38 || e.which === 40) {
+    rightPaddle.dy = 0;
+  }
+  if (e.which === 83 || e.which === 87) {
+    leftPaddle.dy = 0;
+  }
+});
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
