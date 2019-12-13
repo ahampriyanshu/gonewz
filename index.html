@@ -31,8 +31,8 @@
 <body>
   
 <canvas width="750" height="585" id="game" style="position: absolute; left: 23%;top:6%;"></canvas>
-<canvas width="150" height="170" id="score2" style="position: absolute; left: 86%;top:30%;"></canvas>
-<canvas width="150" height="170" id="score1" style="position: absolute; left: 4%;top:30%;"></canvas>
+<canvas width="200" height="200" id="score2" style="position: absolute; left: 84%;top:30%;"></canvas>
+<canvas width="200" height="200" id="score1" style="position: absolute; left: 4%;top:30%;"></canvas>
 
 <script
 type="text/javascript">
@@ -137,76 +137,71 @@ function loop() {
     ball.x = rightPaddle.x - ball.width;   
   }
 
-   if(  ball.x > canvas.width  && !ball.resetting){
+   if(  ball.x > canvas.width ){
         scoreleft++;
         
     }
-  if(  ball.x < 0  && !ball.resetting){
+  if(  ball.x < 0 ){
         scoreright++;
        
     }
-  ro = context.createLinearGradient(0,0,750,585);
-  ro.addColorStop(0,"red");
-  ro.addColorStop(0.025,"orange");
-  ro.addColorStop(0.050,"yellow");
-  ro.addColorStop(0.075,"red");
-  ro.addColorStop(0.100,"orange");
-  ro.addColorStop(0.125,"yellow");
-  ro.addColorStop(0.150,"red");
-  ro.addColorStop(0.175,"orange");
-  ro.addColorStop(0.200,"yellow");
-  ro.addColorStop(0.225,"red");
-  ro.addColorStop(0.250,"yellow");
-  ro.addColorStop(0.275,"orange");
-  ro.addColorStop(0.300,"red");
-  ro.addColorStop(0.325,"orange");
-  ro.addColorStop(0.350,"darkred");
-  ro.addColorStop(0.375,"red");
-  ro.addColorStop(0.400,"yellow");
-  ro.addColorStop(0.425,"orange");
-  ro.addColorStop(0.450,"red");
-  ro.addColorStop(0.475,"orange");
-  ro.addColorStop(0.500,"yellow");
-  ro.addColorStop(0.525,"red");
-  ro.addColorStop(0.550,"orange");
-  ro.addColorStop(0.575,"yellow");
-  ro.addColorStop(0.600,"red");
-  ro.addColorStop(0.625,"orange");
-  ro.addColorStop(0.650,"yellow");
-  ro.addColorStop(0.675,"red");
-  ro.addColorStop(0.700,"orange");
-  ro.addColorStop(0.725,"yellow");
-  ro.addColorStop(0.750,"red");
-  ro.addColorStop(0.775,"yellow");
-  ro.addColorStop(0.800,"orange");
-  ro.addColorStop(0.825,"red");
-  ro.addColorStop(0.850,"orange");
-  ro.addColorStop(0.875,"darkred");
-  ro.addColorStop(0.900,"red");
-  ro.addColorStop(0.925,"yellow");
-  ro.addColorStop(0.950,"orange");
-  ro.addColorStop(0.975,"red");
-  ro.addColorStop(1,"yellow");
+
+  roen = context.createLinearGradient(0,0,750,585);
+  roen.addColorStop(0,"red");
+  roen.addColorStop(0.025,"orange");
+  roen.addColorStop(0.050,"yellow");
+  roen.addColorStop(0.075,"red");
+  roen.addColorStop(0.100,"orange");
+  roen.addColorStop(0.125,"yellow");
+  roen.addColorStop(0.150,"red");
+  roen.addColorStop(0.175,"orange");
+  roen.addColorStop(0.200,"yellow");
+  roen.addColorStop(0.225,"red");
+  roen.addColorStop(0.250,"yellow");
+  roen.addColorStop(0.275,"orange");
+  roen.addColorStop(0.300,"red");
+  roen.addColorStop(0.325,"orange");
+  roen.addColorStop(0.350,"darkred");
+  roen.addColorStop(0.375,"red");
+  roen.addColorStop(0.400,"yellow");
+  roen.addColorStop(0.425,"orange");
+  roen.addColorStop(0.450,"red");
+  roen.addColorStop(0.475,"orange");
+  roen.addColorStop(0.500,"yellow");
+  roen.addColorStop(0.525,"red");
+  roen.addColorStop(0.550,"orange");
+  roen.addColorStop(0.575,"yellow");
+  roen.addColorStop(0.600,"red");
+  roen.addColorStop(0.625,"orange");
+  roen.addColorStop(0.650,"yellow");
+  roen.addColorStop(0.675,"red");
+  roen.addColorStop(0.700,"orange");
+  roen.addColorStop(0.725,"yellow");
+  roen.addColorStop(0.750,"red");
+  roen.addColorStop(0.775,"yellow");
+  roen.addColorStop(0.800,"orange");
+  roen.addColorStop(0.825,"red");
+  roen.addColorStop(0.850,"orange");
+  roen.addColorStop(0.875,"darkred");
+  roen.addColorStop(0.900,"red");
+  roen.addColorStop(0.925,"yellow");
+  roen.addColorStop(0.950,"orange");
+  roen.addColorStop(0.975,"red");
+  roen.addColorStop(1,"yellow");
   context.beginPath();
   context.arc(ball.x,ball.y, grid,0,Math.PI*2);
-  context.fillStyle = ro;
+  context.fillStyle = roen;
   context.fill();
   context.closePath();
   context.fillRect(0, 0, canvas.width, grid);
   context.fillRect(0, canvas.height - grid, canvas.width, canvas.height); 
-
-  bro = context.createLinearGradient(0,0,150,170);
-  bro.addColorStop(0,"cyan");
-  bro.addColorStop(0.25,"lightgreen");
-  bro.addColorStop(0.50,"blue");
-  bro.addColorStop(0.75,"red");
-  bro.addColorStop(1,"pink");
+  
   s2b.fillStyle = "black";
-  s2b.font = 'normal 120px comic sans MS'
-  s2b.fillText(scoreright/24,20,140);
+  s2b.font = 'normal 120px courier'
+  s2b.fillText(Math.floor(scoreright/25),20,140);
   s1b.fillStyle = "white";
-  s1b.font = 'normal 120px comic sans MS'
-  s1b.fillText(Math.floor(scoreleft/24),20,140);
+  s1b.font = 'normal 120px courier'
+  s1b.fillText(Math.floor(scoreleft/25),20,140);
   
 }
 document.addEventListener('keydown', function(e) {
