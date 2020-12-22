@@ -1,2 +1,1 @@
-# Ping-Pong
-Pong game in HTML by using JavaScript,CSS.
+# News application in golang via newsapi
