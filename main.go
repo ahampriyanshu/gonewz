@@ -2,7 +2,9 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"math"
 	"net/http"
@@ -17,6 +19,7 @@ import (
 
 var tpl = template.Must(template.ParseFiles("index.html"))
 
+/*Search structure of search */
 type Search struct {
 	Query      string
 	NextPage   int
@@ -139,6 +142,28 @@ func searchHandler(newsapi *news.Client) http.HandlerFunc {
 	}
 }
 
+func sendSW(w http.ResponseWriter, r *http.Request) {
+	data, err := ioutil.ReadFile("sw.js")
+	if err != nil {
+		http.Error(w, "Couldn't read file", http.StatusInternalServerError)
+		return
+	} else {
+		fmt.Println("Service worker !")
+	}
+	w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+	w.Write(data)
+}
+
+func sendManifest(w http.ResponseWriter, r *http.Request) {
+	data, err := ioutil.ReadFile("manifest.json")
+	if err != nil {
+		http.Error(w, "Couldn't read file", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(data)
+}
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -162,7 +187,9 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
-	mux.HandleFunc("/search", searchHandler(newsapi))
+	mux.HandleFunc("/sw.js", sendSW)
+	mux.HandleFunc("/manifest.json", sendManifest)
 	mux.HandleFunc("/", indexHandler(newsapi))
+	mux.HandleFunc("/search", searchHandler(newsapi))
 	http.ListenAndServe(":"+port, mux)
 }
