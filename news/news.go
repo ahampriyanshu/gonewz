@@ -62,6 +62,28 @@ func (c *Client) FetchEverything(query, page string) (*Results, error) {
 	return res, json.Unmarshal(body, res)
 }
 
+func (c *Client) FetchForIndex(page string) (*Results, error) {
+	endpoint := fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=in&pageSize=%d&page=%s&apiKey=%s&sortBy=publishedAt&language=en", c.PageSize, page, c.key)
+	resp, err := c.http.Get(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(string(body))
+	}
+
+	res := &Results{}
+	return res, json.Unmarshal(body, res)
+}
+
 func NewClient(httpClient *http.Client, key string, pageSize int) *Client {
 	if pageSize > 100 {
 		pageSize = 100

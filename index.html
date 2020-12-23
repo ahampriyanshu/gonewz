@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
-    <title> </title>
+    <title>Gonewz</title>
     <meta name="author" content="ahampriyanshu" />
     <meta name="description" content="Open Source news application in golang and tailwind" />
     <meta name="keywords" content="GONEWZ,gonewz,Open-Source,pwa,go,golang,workbox,tailwind2,ahampriyanshu,github" />
@@ -28,7 +26,7 @@
     <link rel="icon" type="image/png" sizes="96x96" href="assests/img/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assests/img/favicon-16x16.png">
     <meta name="msapplication-TileImage" content="assests/img/ms-icon-144x144.png">
-    <link rel="shortcut-icon" href="assests/img/favicon.ico"> -->
+    <link rel="shortcut-icon" href="assests/img/favicon.ico">
     <meta name="msapplication-TileColor" content="#f9fafb">
     <meta name="theme-color" content="#f9fafb">
     <meta name="theme-color" content="#f9fafb">
@@ -74,69 +72,79 @@
     </div>
     </nav>
 
+    <h1 class="font-sans font-bold text-2xl md:text-3xl leading-none mt-24 text-center text-gray-700">
+    Search results for <span class="text-green-500" >{{ .Query }}</span></h1>
 
-  <!-- component -->
-<div class="container mt-8 md:mt-5 mx-auto py-4 md:px-12 lg:w-10/12 ">
-  <p class="font-sans font-bold text-3xl leading-none mt-10 mb-5 md:mt-15 text-center text-green-500">Featured</p>
-  <div class="flex flex-wrap justify-center">
+      <div>
+        {{ if .Results }}
+        {{ if (gt .Results.TotalResults 0)}}
 
+        <h2 class="leading-none mt-5 text-gray-800 text-center"> About <strong>{{ .Results.TotalResults }}</strong> results were
+          found. You are on page <strong>{{ .CurrentPage }}</strong> of
+          <strong> {{ .TotalPages }}</strong></h2>
 
-    <main>
-      <header>
-        <a class="logo" href="/">News Demo</a>
-        <form action="/search" method="GET">
-          <input
-            autofocus
-            class="search-input"
-            value="{{ .Query }}"
-            placeholder="Enter a news topic"
-            type="search"
-            name="q"
-          />
-        </form>
-        <a
-          href="https://github.com/freshman-tech/news"
-          class="button github-button"
-          >View on Github</a
-        >
-      </header>
-      <section class="container">
-        <div class="result-count">
-          {{ if .Results }}
-          {{ if (gt .Results.TotalResults 0)}}
-          <p>
-            About <strong>{{ .Results.TotalResults }}</strong> results were
-            found. You are on page <strong>{{ .CurrentPage }}</strong> of
-            <strong> {{ .TotalPages }}</strong
-            >.
-          </p>
-          {{ else if (ne .Query "") and (eq .Results.TotalResults 0) }}
-          <p>
-            No results found for your query: <strong>{{ .Query }}</strong
-            >.
-          </p>
-          {{ end }}
-          {{ end }}
-        </div>
-        <ul class="search-results">
-          <!-- prettier-ignore -->
-          {{ range.Results.Articles }}
-          <li class="news-article">
-            <div>
-              <a target="_blank" rel="noreferrer noopener" href="{{.URL}}">
-                <h3 class="title">{{.Title }}</h3>
-              </a>
-              <p class="description">{{ .Description }}</p>
-              <div class="metadata">
-                <p class="source">{{ .Source.Name }}</p>
-                <time class="published-date">{{ .FormatPublishedDate }}</time>
+        {{ else if (eq .Results.TotalResults 0) }}
+    
+        <h2 class="leading-none mt-5 h-screen text-gray-800 text-center">No results were found</h2>
+
+        {{ end }}
+        {{ end }}
+      </div>
+      
+      
+      {{ range.Results.Articles }}
+      
+        <div class="mx-auto px-4 py-4 max-w-xl my-auto">
+          <div class="bg-gray-50 md:bg-white md:shadow-xl rounded-lg mb-6 ">
+            {{if .URLToImage }}
+            <a target="_blank" rel="noreferrer noopener" href="{{.URL}}">
+              <div class="p-4 md:flex-shrink-0">
+       
+                <img src="{{ .URLToImage }}" alt="uploaded cover image"
+                  class="object-cover h-full w-full rounded-lg rounded-b-none"> 
+   
+            </div>
+            </a>
+            {{end}}
+            <div class="py-1">
+              <div class="p-4">
+                <h2 class="truncate font-bold mb-2 md:mt-4 text-2xl text-gray-800 tracking-normal">{{.Title }}</h2>
+                {{ if .Description }}
+                <p class="break-words text-sm text-gray-700 px-2 mr-1">{{ .Description }}</p>
+                {{ else }}
+                <p class="break-words text-sm text-gray-700 px-2 mr-1">No description provided</p>
+                {{end}}
+              </div>
+              <div class="flex items-center justify-between p-2 md:p-4 md:mx-4">
+                <a target="_blank" rel="noreferrer noopener" href="{{.URL}}">
+                  <div class="flex items-center">
+                    <div class="text-sm ml-2">
+                      {{ if .Source.Name }}
+                      <p class="text-black leading-none">{{ .Source.Name }}</p>
+                      {{ else }}
+                      <p class="text-black leading-none">Source : Unknown</p>
+                {{end}}
+
+                {{ if .FormatPublishedDate }}
+                <p class="text-gray-700">{{ .FormatPublishedDate }}</p>
+                {{ else }}
+                <p class="text-gray-700">Date : Unkn1 own</p>
+          {{end}}
+                    </div>
+                  </div>
+                </a>
+                <a target="_blank" rel="noreferrer noopener" href="{{.URL}}"
+                  class="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 py-2">
+                  Read More
+                </a>
               </div>
             </div>
-            <img alt="article-image" class="article-image" src="{{ .URLToImage }}" />
-          </li>
-          <!-- prettier-ignore -->
-          {{ end }}
-        </ul>
+          </div>
+        </div>
+
+        {{ end }}
+
+
         <div class="pagination">
           {{ if . }}
           {{ if (gt .NextPage 2) }}
@@ -155,62 +163,6 @@
           {{ end }}
           {{ end }}
         </div>
-      </section>
-    </main>
-
-    <section class="container">
-      <ul class="search-results">
-        {{ range.Results.Articles }}
-        <li class="news-article">
-          <div>
-            <a target="_blank" rel="noreferrer noopener" href="{{.URL}}">
-              <h3 class="title">{{.Title }}</h3>
-            </a>
-            <p class="description">{{ .Description }}</p>
-            <div class="metadata">
-              <p class="source">{{ .Source.Name }}</p>
-              <time class="published-date">{{ .PublishedAt }}</time>
-            </div>
-          </div>
-          <img alt="article-image" class="article-image" src="{{ .URLToImage }}" />
-        </li>
-        {{ end }}
-      </ul>
-    </section>
-
-    <div class="my-1 px-1 w-full md:w-1/2 md:my-2 md:px-2 flex flex-col justify-between lg:my-4 lg:px-4 lg:w-1/3">
-      <div class="overflow-hidden bg-gray-50 md:bg-white rounded-lg md:shadow-lg">
-        <div class="p-2 md:p-0">
-          <a href="">
-            <img alt="article-image" alt="Placeholder" class="block object-cover h-48 w-full" src="">
-          </a>
-        </div>
-        <div class="md:h-48">
-          <div class="overflow-hidden h-32 p-4 mb-3">
-            <h1 class="truncate font-bold text-xl mb-2"></h1>
-            <p class="break-words bg-white text-sm text-black"></p>
-          </div>
-          <div class="mb-5 flex items-center justify-between leading-none mx-3">
-            <a href=''>
-              <div class="flex items-center">
-                <img  class="w-10 h-10 rounded-full" src="" alt="autor image">
-                <div class="text-sm ml-2">
-                  <p class="text-black leading-none"></p>
-                  <p class="text-gray-600"></p>
-                </div>
-              </div>
-            </a>
-            <a href=""
-              class="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 py-2">
-              Read More
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- <h2 class="leading-none my-10 text-center">We may need some more articles</h2> -->
-  </div>
-</div>
 
 <footer class="font-sans relative pt-5 pb-3 md:pb-6">
   <div class="container mx-auto px-4">
