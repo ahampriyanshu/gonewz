@@ -1,4 +1,4 @@
-module github.com/ahampriyanshu/khbr
+module github.com/ahampriyanshu/gonewz
 
 go 1.15
 

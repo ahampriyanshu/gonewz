@@ -1,6 +1,6 @@
 {
-    "name": "Made in Go",
-    "short_name": "KHBR",
+    "name": "Made with Go",
+    "short_name": "gonews",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",

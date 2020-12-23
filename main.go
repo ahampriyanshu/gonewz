@@ -11,9 +11,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ahampriyanshu/khbr/news"
+	"github.com/ahampriyanshu/gonewz/news"
 	"github.com/joho/godotenv"
 )
+
+var tpl = template.Must(template.ParseFiles("index.html"))
 
 type Search struct {
 	Query      string
@@ -22,7 +24,24 @@ type Search struct {
 	Results    *news.Results
 }
 
-var tpl = template.Must(template.ParseFiles("index.html"))
+/*IsLastPage : checking if the current page is the last page */
+func (s *Search) IsLastPage() bool {
+	return s.NextPage >= s.TotalPages
+}
+
+/*CurrentPage : fetching current page */
+func (s *Search) CurrentPage() int {
+	if s.NextPage == 1 {
+		return s.NextPage
+	}
+
+	return s.NextPage - 1
+}
+
+/*PreviousPage : fetching previous page */
+func (s *Search) PreviousPage() int {
+	return s.CurrentPage() - 1
+}
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	buf := &bytes.Buffer{}
@@ -69,6 +88,10 @@ func searchHandler(newsapi *news.Client) http.HandlerFunc {
 			Results:    results,
 		}
 
+		if ok := !search.IsLastPage(); ok {
+			search.NextPage++
+		}
+
 		buf := &bytes.Buffer{}
 		err = tpl.Execute(buf, search)
 		if err != nil {
@@ -100,9 +123,10 @@ func main() {
 	newsapi := news.NewClient(myClient, apiKey, 20)
 
 	fs := http.FileServer(http.Dir("assets"))
+
 	mux := http.NewServeMux()
-	mux.HandleFunc("/search", searchHandler(newsapi))
 	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	mux.HandleFunc("/search", searchHandler(newsapi))
 	mux.HandleFunc("/", indexHandler)
 	http.ListenAndServe(":"+port, mux)
 }

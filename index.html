@@ -10,27 +10,25 @@
     <title> </title>
     <meta name="author" content="ahampriyanshu" />
     <meta name="description" content="Open Source news application in golang and tailwind" />
-    <meta name="keywords" content="KHBR,khbr,Open-Source,pwa,go,golang,workbox,tailwind2,ahampriyanshu,github" />
+    <meta name="keywords" content="GONEWZ,gonewz,Open-Source,pwa,go,golang,workbox,tailwind2,ahampriyanshu,github" />
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link rel="stylesheet" href="/assets/css/tailwind.min.css" />
     <link rel="manifest" href="/assets/manifest.json">
-    <!-- <link href="css/tailwind.min.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
-    <link rel="apple-touch-icon" sizes="57x57" href="img/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="img/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="img/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="img/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="img/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="img/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="img/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="img/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-    <meta name="msapplication-TileImage" content="img/ms-icon-144x144.png">
-    <link rel="shortcut-icon" href="img/favicon.ico"> -->
+    <link rel="apple-touch-icon" sizes="57x57" href="assests/img/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assests/img/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assests/img/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assests/img/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assests/img/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assests/img/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assests/img/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assests/img/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assests/img/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assests/img/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assests/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assests/img/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assests/img/favicon-16x16.png">
+    <meta name="msapplication-TileImage" content="assests/img/ms-icon-144x144.png">
+    <link rel="shortcut-icon" href="assests/img/favicon.ico"> -->
     <meta name="msapplication-TileColor" content="#f9fafb">
     <meta name="theme-color" content="#f9fafb">
     <meta name="theme-color" content="#f9fafb">
@@ -49,7 +47,7 @@
     <div id="nav-content" class="w-full text-gray-700 bg-gray-50 md:bg-transparent">
       <div x-data="{ open: false }" class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
         <div class="p-4 flex flex-row items-center justify-between">
-          <a href="/" class="text-2xl md:text-3xl font-bold tracking-normal text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">KHBR<span style="color: #FF7F50;">.</span></a>
+          <a href="/" class="text-2xl md:text-3xl font-bold tracking-normal text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">GONEWZ<span style="color: #FF7F50;">.</span></a>
           <button class="md:hidden rounded-lg focus:outline-none focus:shadow-none" @click="open = !open">
             <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
               <path x-show="!open" fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd"></path>
@@ -82,6 +80,84 @@
   <p class="font-sans font-bold text-3xl leading-none mt-10 mb-5 md:mt-15 text-center text-green-500">Featured</p>
   <div class="flex flex-wrap justify-center">
 
+
+    <main>
+      <header>
+        <a class="logo" href="/">News Demo</a>
+        <form action="/search" method="GET">
+          <input
+            autofocus
+            class="search-input"
+            value="{{ .Query }}"
+            placeholder="Enter a news topic"
+            type="search"
+            name="q"
+          />
+        </form>
+        <a
+          href="https://github.com/freshman-tech/news"
+          class="button github-button"
+          >View on Github</a
+        >
+      </header>
+      <section class="container">
+        <div class="result-count">
+          {{ if .Results }}
+          {{ if (gt .Results.TotalResults 0)}}
+          <p>
+            About <strong>{{ .Results.TotalResults }}</strong> results were
+            found. You are on page <strong>{{ .CurrentPage }}</strong> of
+            <strong> {{ .TotalPages }}</strong
+            >.
+          </p>
+          {{ else if (ne .Query "") and (eq .Results.TotalResults 0) }}
+          <p>
+            No results found for your query: <strong>{{ .Query }}</strong
+            >.
+          </p>
+          {{ end }}
+          {{ end }}
+        </div>
+        <ul class="search-results">
+          <!-- prettier-ignore -->
+          {{ range.Results.Articles }}
+          <li class="news-article">
+            <div>
+              <a target="_blank" rel="noreferrer noopener" href="{{.URL}}">
+                <h3 class="title">{{.Title }}</h3>
+              </a>
+              <p class="description">{{ .Description }}</p>
+              <div class="metadata">
+                <p class="source">{{ .Source.Name }}</p>
+                <time class="published-date">{{ .FormatPublishedDate }}</time>
+              </div>
+            </div>
+            <img alt="article-image" class="article-image" src="{{ .URLToImage }}" />
+          </li>
+          <!-- prettier-ignore -->
+          {{ end }}
+        </ul>
+        <div class="pagination">
+          {{ if . }}
+          {{ if (gt .NextPage 2) }}
+          <a
+            href="/search?q={{ .Query }}&page={{ .PreviousPage }}"
+            class="button previous-page"
+            >Previous</a
+          >
+          {{ end }}
+          {{ if (ne .IsLastPage true) }}
+          <a
+            href="/search?q={{ .Query }}&page={{ .NextPage }}"
+            class="button next-page"
+            >Next</a
+          >
+          {{ end }}
+          {{ end }}
+        </div>
+      </section>
+    </main>
+
     <section class="container">
       <ul class="search-results">
         {{ range.Results.Articles }}
@@ -96,7 +172,7 @@
               <time class="published-date">{{ .PublishedAt }}</time>
             </div>
           </div>
-          <img class="article-image" src="{{ .URLToImage }}" />
+          <img alt="article-image" class="article-image" src="{{ .URLToImage }}" />
         </li>
         {{ end }}
       </ul>
@@ -106,7 +182,7 @@
       <div class="overflow-hidden bg-gray-50 md:bg-white rounded-lg md:shadow-lg">
         <div class="p-2 md:p-0">
           <a href="">
-            <img alt="Placeholder" class="block object-cover h-48 w-full" src="">
+            <img alt="article-image" alt="Placeholder" class="block object-cover h-48 w-full" src="">
           </a>
         </div>
         <div class="md:h-48">
@@ -117,7 +193,7 @@
           <div class="mb-5 flex items-center justify-between leading-none mx-3">
             <a href=''>
               <div class="flex items-center">
-                <img class="w-10 h-10 rounded-full" src="" alt="autor image">
+                <img  class="w-10 h-10 rounded-full" src="" alt="autor image">
                 <div class="text-sm ml-2">
                   <p class="text-black leading-none"></p>
                   <p class="text-gray-600"></p>
@@ -141,7 +217,7 @@
     <div class="flex flex-wrap">
       <div class="flex w-full md:w-1/2">
         <div class="text-2xl px-8">
-          <h3 class="font-bold text-gray-900">KHBR<span style="color: #FF7F50;">.</span></h3>
+          <h3 class="font-bold text-gray-900">GONEWZ<span style="color: #FF7F50;">.</span></h3>
 <p class="py-4 text-gray-700 text-sm">
    NewsFed
 </p>
