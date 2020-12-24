@@ -65,12 +65,13 @@
         <div :class="{'flex': open, 'hidden': !open}"
           class="font-sans flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row">
           <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline" href="/category?q=business">Business</a>
-          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=technology">Tech</a>
-          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="https://github.com/ahampriyanshu/gonewz">About</a>
+          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"
+            href="/category?q=technology">Technology</a>
+          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"
+            href="https://github.com/ahampriyanshu/gonewz">About</a>
           <div class="relative text-gray-600 bg-white flex items-center rounded-full">
             <form action="/search" method="get">
-              <input name="q" id="search" type="text" placeholder="Search..."
-                placeholder="Search"
+              <input name="q" id="search" type="text" placeholder="Search..." placeholder="Search"
                 class="bg-white h-10 px-4 md:px-6 lg:px-8 rounded-full text-sm placeholder-green-600 focus:outline-none">
               <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
                 <svg class="h-4 w-4 fill-current text-green-600" xmlns="http://www.w3.org/2000/svg"
@@ -103,10 +104,8 @@
     {{ if .Results }}
     {{ if (gt .Results.TotalResults 0)}}
 
-    <h2 class="leading-none mt-5 text-gray-800 text-center"> About <strong>{{ .Results.TotalResults }}</strong> results
-      were
-      found. You are on page <strong>{{ .CurrentPage }}</strong> of
-      <strong> {{ .TotalPages }}</strong>
+    <h2 class="leading-none mt-5 text-gray-800 text-center">
+      About <strong>{{ .Results.TotalResults }}</strong> results were found.
     </h2>
 
     {{ else if (eq .Results.TotalResults 0) }}
@@ -120,14 +119,14 @@
   {{ else if (eq .Type 3) }}
 
   <h1 class="font-sans font-bold text-2xl md:text-3xl leading-none mt-24 mb-4 text-center text-gray-700">
-  Latest News in <span class="text-green-500">{{ .Query }}</span>
+    Latest News in <span class="text-green-500">{{ .Query }}</span>
   </h1>
 
   {{ else if (eq .Type 4) }}
 
   <h1 class="font-sans font-bold text-2xl md:text-3xl leading-none mt-24 mb-4 text-center text-gray-700">
-  Latest News from <span class="text-green-500 uppercase">{{ .Query }}</span>
-    </h1>
+    Latest News from <span class="text-green-500 uppercase">{{ .Query }}</span>
+  </h1>
 
   {{end}}
 
@@ -156,7 +155,6 @@
           {{end}}
         </div>
 
-
         <div class="flex items-center justify-between p-2 md:p-4 md:mx-4">
           <a target="_blank" rel="noreferrer noopener" href="{{.URL}}">
             <div class="flex items-center">
@@ -180,49 +178,40 @@
             Read More
           </a>
         </div>
-
-
       </div>
     </div>
   </div>
-
   {{ end }}
 
   {{ if (eq .Type 2) }}
-      <div class="font-sans flex md:mt-8 justify-between  content-center px-4 mt-5">
+  <div class="font-sans flex my-5 md:my-10 justify-between content-center max-w-md px-4 mx-auto">
 
-        {{ if (gt .NextPage 2) }}
-        <div class="text-left">
-          <a href="/search?q={{ .Query }}&page={{ .PreviousPage }}"> <span
-              class="text-sm md:text-base font-normal text-gray-600 no-underline hover:underline">
-              &lt; Previous Page</span><br /></a>
-        </div>
-        {{ end }}
+    {{ if (gt .NextPage 2) }}
+    <div class="text-left">
+      <a href="/search?q={{ .Query }}&page={{ .PreviousPage }}"> <span
+          class="text-sm md:text-base font-normal text-gray-600 no-underline hover:underline">
+          &lt; Previous Page</span><br /></a>
+    </div>
+    {{ end }}
 
-        <div class="text-center">
-          <span
-              class="text-sm md:text-base font-normal text-gray-600">
-              Page {{ .CurrentPage }} of {{ .TotalPages }}
-            </span>
-            <br />
-        </div>
+    <div class="text-center">
+      <span class="text-sm md:text-base font-normal text-gray-600">
+        Page {{ .CurrentPage }} of {{ .TotalPages }}
+      </span>
+      <br />
+    </div>
 
-        {{ if (ne .IsLastPage true) }}
-        <div class="text-right">
-          <a href="/search?q={{ .Query }}&page={{ .NextPage }}"> <span
-              class="text-sm md:text-base font-normal text-gray-600 no-underline hover:underline">
-              Next Page &gt;
-            </span>
-            <br /></a>
-        </div>
-        {{ end }}
-
-    
-    
-      </div>
-
-      {{ end }}
-
+    {{ if (ne .IsLastPage true) }}
+    <div class="text-right">
+      <a href="/search?q={{ .Query }}&page={{ .NextPage }}"> <span
+          class="text-sm md:text-base font-normal text-gray-600 no-underline hover:underline">
+          Next Page &gt;
+        </span>
+        <br /></a>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
 
 
   <footer class="font-sans relative pt-5 pb-3 md:pb-6">
@@ -236,7 +225,8 @@
             </p>
             <div class="my-3">
 
-              <a href="" class="h-8 w-8 rounded-full outline-none focus:outline-none" type="button">
+              <a href="https://github.com/ahampriyanshu" class="h-8 w-8 rounded-full outline-none focus:outline-none"
+                type="button">
                 <svg class="fill-current cursor-pointer text-gray-500 hover:text-gray-600" width="24" height="24"
                   viewBox="0 0 24 24">
                   <path
@@ -244,7 +234,8 @@
                 </svg>
               </a>
 
-              <a class="h-8 w-8 rounded-full outline-none focus:outline-none" href="" type="button">
+              <a class="h-8 w-8 rounded-full outline-none focus:outline-none"
+                href="https://www.linkedin.com/in/ahampriyanshu/" type="button">
                 <svg class="fill-current cursor-pointer text-gray-500 hover:text-gray-600" width="24" height="24"
                   viewBox="0 0 24 24">
                   <path
@@ -252,15 +243,17 @@
                 </svg>
               </a>
 
-              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none" href="" type="button">
+              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none"
+                href="https://wa.me/919917956610?text=Hi%20Priyanshu" type="button">
                 <svg class="fill-current cursor-pointer text-gray-500 hover:text-gray-600" width="24" height="24"
                   viewBox="0 0 24 24">
-                  <path id="telegram-1"
-                    d="M18.384,22.779c0.322,0.228 0.737,0.285 1.107,0.145c0.37,-0.141 0.642,-0.457 0.724,-0.84c0.869,-4.084 2.977,-14.421 3.768,-18.136c0.06,-0.28 -0.04,-0.571 -0.26,-0.758c-0.22,-0.187 -0.525,-0.241 -0.797,-0.14c-4.193,1.552 -17.106,6.397 -22.384,8.35c-0.335,0.124 -0.553,0.446 -0.542,0.799c0.012,0.354 0.25,0.661 0.593,0.764c2.367,0.708 5.474,1.693 5.474,1.693c0,0 1.452,4.385 2.209,6.615c0.095,0.28 0.314,0.5 0.603,0.576c0.288,0.075 0.596,-0.004 0.811,-0.207c1.216,-1.148 3.096,-2.923 3.096,-2.923c0,0 3.572,2.619 5.598,4.062Zm-11.01,-8.677l1.679,5.538l0.373,-3.507c0,0 6.487,-5.851 10.185,-9.186c0.108,-0.098 0.123,-0.262 0.033,-0.377c-0.089,-0.115 -0.253,-0.142 -0.376,-0.064c-4.286,2.737 -11.894,7.596 -11.894,7.596Z" />
+                  <path
+                    d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
                 </svg>
               </a>
 
-              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none" href="" type="button">
+              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none"
+                href="mailto:ahampriyanshu@gmail.com?subject=Hello" type="button">
                 <svg class="fill-current cursor-pointer text-gray-500 hover:text-gray-600" width="24" height="24"
                   viewBox="0 0 24 24">
                   <path
@@ -268,7 +261,8 @@
                 </svg>
               </a>
 
-              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none" href="" type="button">
+              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none" href="https://twitter.com/ahampriyanshu"
+                type="button">
                 <svg class="fill-current cursor-pointer text-gray-500 hover:text-gray-600" width="24" height="24"
                   viewBox="0 0 24 24">
                   <path
@@ -276,7 +270,8 @@
                 </svg>
               </a>
 
-              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none" href="" type="button">
+              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none"
+                href="https://www.instagram.com/ahampriyanshu/" type="button">
                 <svg class="fill-current cursor-pointer text-gray-500 hover:text-gray-600" width="24" height="24"
                   viewBox="0 0 24 24">
                   <path
@@ -284,7 +279,8 @@
                 </svg>
               </a>
 
-              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none" href="" type="button">
+              <a class=" h-8 w-8 rounded-full outline-none focus:outline-none"
+                href="https://www.reddit.com/user/ahampriyanshu" type="button">
                 <svg class="fill-current cursor-pointer text-gray-500 hover:text-gray-600" width="24" height="24"
                   viewBox="0 0 24 24">
                   <path
@@ -320,12 +316,12 @@
               <ul class="list-unstyled">
                 <li>
                   <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/category?q=entertainment">
-                  Entertainment
+                    Entertainment
                   </a>
                 </li>
                 <li>
                   <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/category?q=science">
-                  Science
+                    Science
                   </a>
                 </li>
                 <li>
@@ -335,7 +331,7 @@
                 </li>
                 <li>
                   <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/category?q=health">
-                  Health
+                    Health
                   </a>
                 </li>
               </ul>
@@ -357,5 +353,4 @@
 </body>
 <script src="assets/js/scripts.js" type="text/javascript"></script>
 <script src="assets/js/alpine.min.js" defer></script>
-
 </html>

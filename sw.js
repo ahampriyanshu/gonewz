@@ -1,14 +1,13 @@
-var dataCacheName = 'Gonewz';
-var cacheName = 'Gonewz';
+var dataCacheName = 'Gonewz_data';
+var cacheName = 'Gonewz_cache';
 var filesToCache = [
   '/',
   '/index.html',
   '/assests/js/scripts.js',
   '/assests/js/alpine.min.js',
-  '/images/clear.png',
   '/assests/css/style.css',
   '/assests/css/tailwind.min.css',
-  'assets/img/favicon.ico'
+  'assets/img/favicon.ico',
 ];
 
 self.addEventListener('install', function(e) {
@@ -38,15 +37,8 @@ self.addEventListener('activate', function(e) {
 
 self.addEventListener('fetch', function(e) {
   console.log('[Service Worker] Fetch', e.request.url);
-  var dataUrl = 'https://www.google.com';
+  var dataUrl = 'https://saurav.tech/NewsAPI/top-headlines/category/general/in.json';
   if (e.request.url.indexOf(dataUrl) > -1) {
-    /*
-     * When the request URL contains dataUrl, the app is asking for fresh
-     * weather data. In this case, the service worker always goes to the
-     * network and then caches the response. This is called the "Cache then
-     * network" strategy:
-     * https://jakearchibald.com/2014/offline-cookbook/#cache-then-network
-     */
     e.respondWith(
       caches.open(dataCacheName).then(async function(cache) {
         const response = await fetch(e.request);
@@ -55,11 +47,6 @@ self.addEventListener('fetch', function(e) {
       })
     );
   } else {
-    /*
-     * The app is asking for app shell files. In this scenario the app uses the
-     * "Cache, falling back to the network" offline strategy:
-     * https://jakearchibald.com/2014/offline-cookbook/#cache-falling-back-to-network
-     */
     e.respondWith(
       caches.match(e.request).then(function(response) {
         return response || fetch(e.request);

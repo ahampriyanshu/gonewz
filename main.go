@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -19,8 +18,8 @@ import (
 
 var tpl = template.Must(template.ParseFiles("index.html"))
 
-/*Search structure of search */
-type Search struct {
+/*Q structure of Q */
+type Q struct {
 	Query      string
 	NextPage   int
 	TotalPages int
@@ -29,12 +28,12 @@ type Search struct {
 }
 
 /*IsLastPage : checking if the current page is the last page */
-func (s *Search) IsLastPage() bool {
+func (s *Q) IsLastPage() bool {
 	return s.NextPage >= s.TotalPages
 }
 
 /*CurrentPage : fetching current page */
-func (s *Search) CurrentPage() int {
+func (s *Q) CurrentPage() int {
 	if s.NextPage == 1 {
 		return s.NextPage
 	}
@@ -43,7 +42,7 @@ func (s *Search) CurrentPage() int {
 }
 
 /*PreviousPage : fetching previous page */
-func (s *Search) PreviousPage() int {
+func (s *Q) PreviousPage() int {
 	return s.CurrentPage() - 1
 }
 
@@ -57,9 +56,9 @@ func dataHandler(newsapi *news.Client, pageType int) http.HandlerFunc {
 
 		params := u.Query()
 
-		searchQuery := params.Get("q")
-		if searchQuery == "" {
-			searchQuery = "Why am I so lonely"
+		Query := params.Get("q")
+		if Query == "" {
+			Query = "Why am I so lonely"
 		}
 		page := params.Get("page")
 		if page == "" {
@@ -68,34 +67,37 @@ func dataHandler(newsapi *news.Client, pageType int) http.HandlerFunc {
 
 		var results *news.Results
 
-		if pageType == 1 {
-			results, err = newsapi.FetchForIndex(page)
+		switch pageType {
+		case 1:
+			results, err = newsapi.FetchHeadline(page)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-
-		} else if pageType == 2 {
-			results, err = newsapi.FetchEverything(searchQuery, page)
+		case 2:
+			results, err = newsapi.FetchBySearch(Query, page)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-
-		} else if pageType == 3 {
-			results, err = newsapi.FetchCategory(searchQuery, page)
+		case 3:
+			results, err = newsapi.FetchByCategory(Query, page)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-
-		} else if pageType == 4 {
-			results, err = newsapi.FetchBySource(searchQuery, page)
+		case 4:
+			results, err = newsapi.FetchBySource(Query, page)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-
+		default:
+			results, err = newsapi.FetchBySearch(Query, page)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 		}
 
 		nextPage, err := strconv.Atoi(page)
@@ -104,20 +106,20 @@ func dataHandler(newsapi *news.Client, pageType int) http.HandlerFunc {
 			return
 		}
 
-		search := &Search{
-			Query:      searchQuery,
+		q := &Q{
+			Query:      Query,
 			NextPage:   nextPage,
 			TotalPages: int(math.Ceil(float64(results.TotalResults / newsapi.PageSize))),
 			Results:    results,
 			Type:       pageType,
 		}
 
-		if ok := !search.IsLastPage(); ok {
-			search.NextPage++
+		if ok := !q.IsLastPage(); ok {
+			q.NextPage++
 		}
 
 		buf := &bytes.Buffer{}
-		err = tpl.Execute(buf, search)
+		err = tpl.Execute(buf, q)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -132,8 +134,6 @@ func sendSW(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "Couldn't read file", http.StatusInternalServerError)
 		return
-	} else {
-		fmt.Println("Service worker !")
 	}
 	w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
 	w.Write(data)
