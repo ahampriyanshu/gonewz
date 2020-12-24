@@ -27,7 +27,7 @@
   <link rel="icon" type="image/png" sizes="96x96" href="assests/img/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assests/img/favicon-16x16.png">
   <meta name="msapplication-TileImage" content="assests/img/ms-icon-144x144.png">
-  <link rel="shortcut-icon" href="/assests/img/favicon.ico">
+  <link rel="shortcut-icon" href="assets/img/favicon-96x96.png">
   <meta name="msapplication-TileColor" content="#f9fafb">
   <meta name="theme-color" content="#f9fafb">
   <meta name="theme-color" content="#f9fafb">
@@ -48,7 +48,7 @@
         class="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
         <div class="p-4 flex flex-row items-center justify-between">
           <a href="/"
-            class="text-2xl md:text-3xl font-bold tracking-normal text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">GONEWZ<span
+            class="text-2xl md:text-3xl font-bold tracking-normal text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">Gonewz<span
               style="color: #FF7F50;">.</span></a>
           <button class="md:hidden rounded-lg focus:outline-none focus:shadow-none" @click="open = !open">
             <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
@@ -63,12 +63,14 @@
         </div>
         <div :class="{'flex': open, 'hidden': !open}"
           class="font-sans flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row">
-          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline" href="/article">Article</a>
-          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline" href="/about">About</a>
-          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline" href="/contact">Contact</a>
+          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline" href="/category?q=business">Business</a>
+          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=technology">Tech</a>
+          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=sports">Sports</a>
+          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=science">Science</a>
+          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=entertainment">Gossip</a>
           <div class="relative text-gray-600 bg-white flex items-center rounded-full">
             <form action="/search" method="get">
-              <input autofocus name="q" id="search" type="text" value="{{ .Query }}" placeholder="Search..."
+              <input name="q" id="search" type="text" placeholder="Search..."
                 placeholder="Search"
                 class="bg-white h-10 px-4 md:px-6 lg:px-8 rounded-full text-sm placeholder-green-600 focus:outline-none">
               <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
@@ -210,7 +212,7 @@
       <div class="flex flex-wrap">
         <div class="flex w-full md:w-1/2">
           <div class="text-2xl px-8">
-            <h3 class="font-bold text-gray-900">GONEWZ<span style="color: #FF7F50;">.</span></h3>
+            <h3 class="font-bold text-gray-900">Gonewz<span style="color: #FF7F50;">.</span></h3>
             <p class="py-4 text-gray-700 text-sm">
               News is what somebody somewhere wants to suppress, all the rest is advertising.
             </p>

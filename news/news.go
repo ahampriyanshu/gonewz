@@ -20,7 +20,6 @@ type Article struct {
 	URL         string    `json:"url"`
 	URLToImage  string    `json:"urlToImage"`
 	PublishedAt time.Time `json:"publishedAt"`
-	Content     string    `json:"content"`
 }
 
 func (a *Article) FormatPublishedDate() string {
@@ -40,8 +39,8 @@ type Client struct {
 	PageSize int
 }
 
-func (c *Client) FetchEverything(query, page string) (*Results, error) {
-	endpoint := fmt.Sprintf("https://newsapi.org/v2/everything?q=%s&pageSize=%d&page=%s&apiKey=%s&sortBy=publishedAt&language=en", url.QueryEscape(query), c.PageSize, page, c.key)
+func (c *Client) FetchForIndex(page string) (*Results, error) {
+	endpoint := fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=in&pageSize=%d&page=%s&apiKey=%s&sortBy=publishedAt&language=en", c.PageSize, page, c.key)
 	resp, err := c.http.Get(endpoint)
 	if err != nil {
 		return nil, err
@@ -62,8 +61,30 @@ func (c *Client) FetchEverything(query, page string) (*Results, error) {
 	return res, json.Unmarshal(body, res)
 }
 
-func (c *Client) FetchForIndex(page string) (*Results, error) {
-	endpoint := fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=in&pageSize=%d&page=%s&apiKey=%s&sortBy=publishedAt&language=en", c.PageSize, page, c.key)
+func (c *Client) FetchCategory(category, page string) (*Results, error) {
+	endpoint := fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=in&category=%s&pageSize=%d&page=%s&apiKey=%s&sortBy=publishedAt&language=en", url.QueryEscape(category), c.PageSize, page, c.key)
+	resp, err := c.http.Get(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(string(body))
+	}
+
+	res := &Results{}
+	return res, json.Unmarshal(body, res)
+}
+
+func (c *Client) FetchEverything(query, page string) (*Results, error) {
+	endpoint := fmt.Sprintf("https://newsapi.org/v2/everything?q=%s&pageSize=%d&page=%s&apiKey=%s&sortBy=publishedAt&language=en", url.QueryEscape(query), c.PageSize, page, c.key)
 	resp, err := c.http.Get(endpoint)
 	if err != nil {
 		return nil, err

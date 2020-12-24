@@ -46,7 +46,7 @@ func (s *Search) PreviousPage() int {
 	return s.CurrentPage() - 1
 }
 
-func indexHandler(newsapi *news.Client) http.HandlerFunc {
+func dataHandler(newsapi *news.Client, pageType int) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		u, err := url.Parse(r.URL.String())
 		if err != nil {
@@ -55,63 +55,39 @@ func indexHandler(newsapi *news.Client) http.HandlerFunc {
 		}
 
 		params := u.Query()
-		page := params.Get("page")
-		if page == "" {
-			page = "1"
-		}
 
-		results, err := newsapi.FetchForIndex(page)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		nextPage, err := strconv.Atoi(page)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		search := &Search{
-			NextPage:   nextPage,
-			TotalPages: int(math.Ceil(float64(results.TotalResults / newsapi.PageSize))),
-			Results:    results,
-		}
-
-		if ok := !search.IsLastPage(); ok {
-			search.NextPage++
-		}
-
-		buf := &bytes.Buffer{}
-		err = tpl.Execute(buf, search)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		buf.WriteTo(w)
-	}
-}
-
-func searchHandler(newsapi *news.Client) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		u, err := url.Parse(r.URL.String())
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		params := u.Query()
 		searchQuery := params.Get("q")
+		if searchQuery == "" {
+			searchQuery = "Why am I so lonely"
+		}
 		page := params.Get("page")
 		if page == "" {
 			page = "1"
 		}
 
-		results, err := newsapi.FetchEverything(searchQuery, page)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+		var results *news.Results
+
+		if pageType == 1 {
+			results, err = newsapi.FetchForIndex(page)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+		} else if pageType == 2 {
+			results, err = newsapi.FetchEverything(searchQuery, page)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+		} else if pageType == 3 {
+			results, err = newsapi.FetchCategory(searchQuery, page)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
 		}
 
 		nextPage, err := strconv.Atoi(page)
@@ -189,7 +165,8 @@ func main() {
 	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	mux.HandleFunc("/sw.js", sendSW)
 	mux.HandleFunc("/manifest.json", sendManifest)
-	mux.HandleFunc("/", indexHandler(newsapi))
-	mux.HandleFunc("/search", searchHandler(newsapi))
+	mux.HandleFunc("/", dataHandler(newsapi, 1))
+	mux.HandleFunc("/search", dataHandler(newsapi, 2))
+	mux.HandleFunc("/category", dataHandler(newsapi, 3))
 	http.ListenAndServe(":"+port, mux)
 }

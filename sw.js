@@ -38,7 +38,7 @@ self.addEventListener('activate', function(e) {
 
 self.addEventListener('fetch', function(e) {
   console.log('[Service Worker] Fetch', e.request.url);
-  var dataUrl = 'https://query.yahooapis.com/v1/public/yql';
+  var dataUrl = 'https://www.google.com';
   if (e.request.url.indexOf(dataUrl) > -1) {
     /*
      * When the request URL contains dataUrl, the app is asking for fresh
@@ -48,11 +48,10 @@ self.addEventListener('fetch', function(e) {
      * https://jakearchibald.com/2014/offline-cookbook/#cache-then-network
      */
     e.respondWith(
-      caches.open(dataCacheName).then(function(cache) {
-        return fetch(e.request).then(function(response){
-          cache.put(e.request.url, response.clone());
-          return response;
-        });
+      caches.open(dataCacheName).then(async function(cache) {
+        const response = await fetch(e.request);
+        cache.put(e.request.url, response.clone());
+        return response;
       })
     );
   } else {
