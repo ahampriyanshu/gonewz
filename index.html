@@ -7,6 +7,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Gonewz</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
   <meta name="author" content="ahampriyanshu" />
   <meta name="description" content="Open Source news application in golang and tailwind" />
   <meta name="keywords" content="GONEWZ,gonewz,Open-Source,pwa,go,golang,workbox,tailwind2,ahampriyanshu,github" />
@@ -65,9 +66,7 @@
           class="font-sans flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row">
           <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline" href="/category?q=business">Business</a>
           <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=technology">Tech</a>
-          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=sports">Sports</a>
-          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=science">Science</a>
-          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="/category?q=entertainment">Gossip</a>
+          <a class="px-4 py-2 mt-2 text-black md:mt-0 md:ml-4 hover:underline"  href="https://github.com/ahampriyanshu/gonewz">About</a>
           <div class="relative text-gray-600 bg-white flex items-center rounded-full">
             <form action="/search" method="get">
               <input name="q" id="search" type="text" placeholder="Search..."
@@ -89,7 +88,13 @@
     </div>
   </nav>
 
-  {{ if .Query }}
+  {{ if (eq .Type 1) }}
+
+  <h1 class="font-sans font-bold text-2xl md:text-3xl leading-none mt-24 mb-4 text-center text-gray-700">
+    <span class="text-green-500">Top Headlines</span>
+  </h1>
+
+  {{ else if (eq .Type 2) }}
 
   <h1 class="font-sans font-bold text-2xl md:text-3xl leading-none mt-24 text-center text-gray-700">
     Search results for <span class="text-green-500">{{ .Query }}</span></h1>
@@ -112,29 +117,17 @@
     {{ end }}
   </div>
 
-  {{ else}}
+  {{ else if (eq .Type 3) }}
 
-  <h1 class="font-sans font-bold text-2xl md:text-3xl leading-none mt-24 text-center text-gray-700">
-    <span class="text-green-500">Top Headlines</span>
+  <h1 class="font-sans font-bold text-2xl md:text-3xl leading-none mt-24 mb-4 text-center text-gray-700">
+  Latest News in <span class="text-green-500">{{ .Query }}</span>
   </h1>
 
-  <div>
-    {{ if .Results }}
-    {{ if (gt .Results.TotalResults 0)}}
+  {{ else if (eq .Type 4) }}
 
-    <h2 class="leading-none mt-5 text-gray-800 text-center"> About <strong>{{ .Results.TotalResults }}</strong> results
-      were
-      found. You are on page <strong>{{ .CurrentPage }}</strong> of
-      <strong> {{ .TotalPages }}</strong>
-    </h2>
-
-    {{ else if (eq .Results.TotalResults 0) }}
-
-    <h2 class="leading-none mt-5 h-screen text-gray-800 text-center">No results were found</h2>
-
-    {{ end }}
-    {{ end }}
-  </div>
+  <h1 class="font-sans font-bold text-2xl md:text-3xl leading-none mt-24 mb-4 text-center text-gray-700">
+  Latest News from <span class="text-green-500 uppercase">{{ .Query }}</span>
+    </h1>
 
   {{end}}
 
@@ -195,17 +188,42 @@
 
   {{ end }}
 
+  {{ if (eq .Type 2) }}
+      <div class="font-sans flex md:mt-8 justify-between  content-center px-4 mt-5">
 
-  <div class="pagination">
-    {{ if . }}
-    {{ if (gt .NextPage 2) }}
-    <a href="/search?q={{ .Query }}&page={{ .PreviousPage }}" class="button previous-page">Previous</a>
-    {{ end }}
-    {{ if (ne .IsLastPage true) }}
-    <a href="/search?q={{ .Query }}&page={{ .NextPage }}" class="button next-page">Next</a>
-    {{ end }}
-    {{ end }}
-  </div>
+        {{ if (gt .NextPage 2) }}
+        <div class="text-left">
+          <a href="/search?q={{ .Query }}&page={{ .PreviousPage }}"> <span
+              class="text-sm md:text-base font-normal text-gray-600 no-underline hover:underline">
+              &lt; Previous Page</span><br /></a>
+        </div>
+        {{ end }}
+
+        <div class="text-center">
+          <span
+              class="text-sm md:text-base font-normal text-gray-600">
+              Page {{ .CurrentPage }} of {{ .TotalPages }}
+            </span>
+            <br />
+        </div>
+
+        {{ if (ne .IsLastPage true) }}
+        <div class="text-right">
+          <a href="/search?q={{ .Query }}&page={{ .NextPage }}"> <span
+              class="text-sm md:text-base font-normal text-gray-600 no-underline hover:underline">
+              Next Page &gt;
+            </span>
+            <br /></a>
+        </div>
+        {{ end }}
+
+    
+    
+      </div>
+
+      {{ end }}
+
+
 
   <footer class="font-sans relative pt-5 pb-3 md:pb-6">
     <div class="container mx-auto px-4">
@@ -279,44 +297,45 @@
 
         <div class="w-full lg:w-6/12 px-4">
           <div class="flex flex-wrap items-top">
-            <div class="w-full lg:w-4/12 px-4 ml-auto">
-              <h3 class="font-bold text-sm text-gray-900 mb-2">Popular</h3>
+            <div class="w-full lg:w-4/12  px-4 ml-auto">
+              <h3 class="font-bold text-sm text-gray-900 mb-2">Outlets</h3>
               <ul class="list-unstyled">
                 <li>
-                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="">BBC</a>
+                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/source?q=bbc-news">BBC</a>
                 </li>
                 <li>
-                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="">Bloomberg</a>
+                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/source?q=cnn">CNN</a>
                 </li>
                 <li>
-                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="">WJS</a>
+                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/source?q=fox-news">Fox</a>
                 </li>
                 <li>
-                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="">Reuters</a>
+                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/source?q=google-news">Google</a>
                 </li>
               </ul>
             </div>
+
             <div class="w-full lg:w-4/12 px-4">
-              <h3 class="font-bold text-sm text-gray-900 mb-2">Resources</h3>
+              <h3 class="font-bold text-sm text-gray-900 mb-2">Categories</h3>
               <ul class="list-unstyled">
                 <li>
-                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="">
-                    The Hindu
+                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/category?q=entertainment">
+                  Entertainment
                   </a>
                 </li>
                 <li>
-                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="">
-                    Indian Express
+                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/category?q=science">
+                  Science
                   </a>
                 </li>
                 <li>
-                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="">
-                    LiveMint
+                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/category?q=sports">
+                    Sports
                   </a>
                 </li>
                 <li>
-                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="">
-                    NDTV
+                  <a class="text-gray-700 hover:text-gray-900 pb-2 text-sm" href="/category?q=health">
+                  Health
                   </a>
                 </li>
               </ul>

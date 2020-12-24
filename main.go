@@ -25,6 +25,7 @@ type Search struct {
 	NextPage   int
 	TotalPages int
 	Results    *news.Results
+	Type       int
 }
 
 /*IsLastPage : checking if the current page is the last page */
@@ -88,6 +89,13 @@ func dataHandler(newsapi *news.Client, pageType int) http.HandlerFunc {
 				return
 			}
 
+		} else if pageType == 4 {
+			results, err = newsapi.FetchBySource(searchQuery, page)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
 		}
 
 		nextPage, err := strconv.Atoi(page)
@@ -101,6 +109,7 @@ func dataHandler(newsapi *news.Client, pageType int) http.HandlerFunc {
 			NextPage:   nextPage,
 			TotalPages: int(math.Ceil(float64(results.TotalResults / newsapi.PageSize))),
 			Results:    results,
+			Type:       pageType,
 		}
 
 		if ok := !search.IsLastPage(); ok {
@@ -168,5 +177,6 @@ func main() {
 	mux.HandleFunc("/", dataHandler(newsapi, 1))
 	mux.HandleFunc("/search", dataHandler(newsapi, 2))
 	mux.HandleFunc("/category", dataHandler(newsapi, 3))
+	mux.HandleFunc("/source", dataHandler(newsapi, 4))
 	http.ListenAndServe(":"+port, mux)
 }
