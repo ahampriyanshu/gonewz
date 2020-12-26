@@ -3,7 +3,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://gonewz.herokuapp.com/)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://gonewz.herokuapp.com/)
 [![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://gonewz.herokuapp.com/)
-[![size](https://img.shields.io/github/repo-size/ahampriyanshu/ojas?style=flat-square)](https://gonewz.herokuapp.com/)
+[![size](https://img.shields.io/github/repo-size/ahampriyanshu/gonewz?style=flat-square)](https://gonewz.herokuapp.com/)
 [![Website status](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://gonewz.herokuapp.com/)
 
 ## Home
