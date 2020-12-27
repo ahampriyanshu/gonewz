@@ -32,11 +32,14 @@
 ```bash
 
 git clone https://github.com/ahampriyanshu/gonewz.git && cd gonewz
-echo NEWS_API_KEY="xxxxxxxxxxxx" >> .env
+echo PORT=3000$'\n'NEWS_API_KEY="secret_key" >> .env
 go build && ./gonewz
 
 ```
 
+* Change "secret_key" with your news_api_key.
+
+* For deployment on heroku, click [here](https://devcenter.heroku.com/articles/getting-started-with-go)
 
 ## Dependencies
 
