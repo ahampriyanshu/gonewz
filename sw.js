@@ -1,27 +1,39 @@
-const cacheName = 'v1::static';
+const OFFLINE_VERSION = 1;
+const CACHE_NAME = 'offline';
+const OFFLINE_URL = 'index.html';
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(cacheName).then(async cache => {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/assests/js/scripts.js',
-        '/assests/js/alpine.min.js',
-        '/assests/css/style.css',
-        '/assests/css/tailwind.min.css',
-        'assets/img/favicon.ico',
-      ]).then(() => self.skipWaiting());
-    })
-  );
+self.addEventListener('install', (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.add(new Request(OFFLINE_URL, {cache: 'reload'}));
+  })());
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.open(cacheName).then(async cache => {
-      return cache.match(event.request).then(res => {
-        return res || fetch(event.request)
-      });
-    })
-  );
+self.addEventListener('activate', (event) => {
+  event.waitUntil((async () => {
+    if ('navigationPreload' in self.registration) {
+      await self.registration.navigationPreload.enable();
+    }
+  })());
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.mode === 'navigate') {
+    event.respondWith((async () => {
+      try {
+        const preloadResponse = await event.preloadResponse;
+        if (preloadResponse) {
+          return preloadResponse;
+        }
+        const networkResponse = await fetch(event.request);
+        return networkResponse;
+      } catch (error) {
+        console.log('Fetch failed; returning offline page instead.', error);
+        const cache = await caches.open(CACHE_NAME);
+        const cachedResponse = await cache.match(OFFLINE_URL);
+        return cachedResponse;
+      }
+    })());
+  }
 });
